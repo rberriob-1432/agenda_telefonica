@@ -1,8 +1,9 @@
-package dominio.modelo;
+ package dominio.modelo;
 import dominio.ov.Correo;
 import dominio.ov.Id;
 import dominio.ov.Nombre;
 import dominio.ov.Telefono;
+
 public class Contacto {
 
     private static final byte MAX_CONTACTOS = 100;
@@ -22,40 +23,51 @@ public class Contacto {
         this.cantidadContactos = 0;
     }
 
-    public void agregarContacto(
-            final Nombre nombre,
-            final Telefono telefono,
-            final Correo correo,
-            final Id id) {
-        if (cantidadContactos >= MAX_CONTACTOS) {
-            throw new IllegalStateException("La agenda está llena");
-        }
-
-        nombres[cantidadContactos] = nombre;
-        telefonos[cantidadContactos] = telefono;
-        correos[cantidadContactos] = correo;
-        ids[cantidadContactos] = id;
-
-        cantidadContactos++;
-    }
-
     public byte getCantidadContactos() {
         return cantidadContactos;
+    }
+
+    public void setCantidadContactos(final byte cantidadContactos) {
+        this.cantidadContactos = cantidadContactos;
     }
 
     public Nombre getNombre(final byte indice) {
         return nombres[indice];
     }
 
+    public void setNombre(
+            final byte indice,
+            final Nombre nombre) {
+        nombres[indice] = nombre;
+    }
+
     public Id getId(final byte indice) {
         return ids[indice];
+    }
+
+    public void setId(
+            final byte indice,
+            final Id id) {
+        ids[indice] = id;
     }
 
     public Telefono getTelefono(final byte indice) {
         return telefonos[indice];
     }
 
+    public void setTelefono(
+            final byte indice,
+            final Telefono telefono) {
+        telefonos[indice] = telefono;
+    }
+
     public Correo getCorreo(final byte indice) {
         return correos[indice];
+    }
+
+    public void setCorreo(
+            final byte indice,
+            final Correo correo) {
+        correos[indice] = correo;
     }
 }
