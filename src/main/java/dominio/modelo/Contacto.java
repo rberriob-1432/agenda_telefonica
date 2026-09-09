@@ -3,7 +3,7 @@ import dominio.ov.Correo;
 import dominio.ov.Id;
 import dominio.ov.Nombre;
 import dominio.ov.Telefono;
-public class Agenda {
+public class Contacto {
 
     private static final byte MAX_CONTACTOS = 100;
 
@@ -14,7 +14,7 @@ public class Agenda {
 
     private byte cantidadContactos;
 
-    public Agenda() {
+    public Contacto() {
         this.nombres = new Nombre[MAX_CONTACTOS];
         this.telefonos = new Telefono[MAX_CONTACTOS];
         this.correos = new Correo[MAX_CONTACTOS];

@@ -6,5 +6,5 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 
 public interface ActualizarContactoCasoUso {
-    Contacto execute(@NotNull @Valid ActualizarContactoComando command);
+    Contacto execute(@NotNull @Valid ActualizarContactoComando comando);
 }

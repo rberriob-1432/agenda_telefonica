@@ -1,0 +1,9 @@
+/home/filabb/UDC/estructura_de_datos/protocolo-individual-1/agendatelefonica/src/main/java/aplicacion/servicios/dto/comando/AgregarContactoComando.java
+/home/filabb/UDC/estructura_de_datos/protocolo-individual-1/agendatelefonica/src/main/java/dominio/excepciones/CorreoInvalidoException.java
+/home/filabb/UDC/estructura_de_datos/protocolo-individual-1/agendatelefonica/src/main/java/dominio/excepciones/DomainException.java
+/home/filabb/UDC/estructura_de_datos/protocolo-individual-1/agendatelefonica/src/main/java/dominio/excepciones/NombreInvalidoException.java
+/home/filabb/UDC/estructura_de_datos/protocolo-individual-1/agendatelefonica/src/main/java/dominio/excepciones/TelefonoInvalidoException.java
+/home/filabb/UDC/estructura_de_datos/protocolo-individual-1/agendatelefonica/src/main/java/dominio/modelo/Agenda.java
+/home/filabb/UDC/estructura_de_datos/protocolo-individual-1/agendatelefonica/src/main/java/dominio/ov/Correo.java
+/home/filabb/UDC/estructura_de_datos/protocolo-individual-1/agendatelefonica/src/main/java/dominio/ov/Nombre.java
+/home/filabb/UDC/estructura_de_datos/protocolo-individual-1/agendatelefonica/src/main/java/dominio/ov/Telefono.java

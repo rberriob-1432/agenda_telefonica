@@ -9,7 +9,9 @@ public record ActualizarContactoComando(
         String nombre,
         @NotBlank(message = "correo no debe ser vacio")
         @Email(message = "correo debe tener un formato valido")
-        String correo
+        String correo,
+        @NotBlank(message = "telefono no puede estar vacío")
+                String telefono
 
 ) {
 }
