@@ -1,28 +1,35 @@
 package dominio.modelo;
+import dominio.ov.Correo;
+import dominio.ov.Id;
+import dominio.ov.Nombre;
+import dominio.ov.Telefono;
 public class Agenda {
 
     private static final byte MAX_CONTACTOS = 100;
 
-    private final String[] nombres;
-    private final String[] telefonos;
-    private final String[] correos;
-    private final String[] ids;
+    private final Nombre[] nombres;
+    private final Telefono[] telefonos;
+    private final Correo[] correos;
+    private final Id[] ids;
 
     private byte cantidadContactos;
 
     public Agenda() {
-        this.nombres = new String[MAX_CONTACTOS];
-        this.telefonos = new String[MAX_CONTACTOS];
-        this.correos = new String[MAX_CONTACTOS];
-        this.ids = new String[MAX_CONTACTOS];
+        this.nombres = new Nombre[MAX_CONTACTOS];
+        this.telefonos = new Telefono[MAX_CONTACTOS];
+        this.correos = new Correo[MAX_CONTACTOS];
+        this.ids = new Id[MAX_CONTACTOS];
         this.cantidadContactos = 0;
     }
 
     public void agregarContacto(
-            final String nombre,
-            final String telefono,
-            final String correo,
-            final String id) {
+            final Nombre nombre,
+            final Telefono telefono,
+            final Correo correo,
+            final Id id) {
+        if (cantidadContactos >= MAX_CONTACTOS) {
+            throw new IllegalStateException("La agenda está llena");
+        }
 
         nombres[cantidadContactos] = nombre;
         telefonos[cantidadContactos] = telefono;
@@ -36,19 +43,19 @@ public class Agenda {
         return cantidadContactos;
     }
 
-    public String getNombre(final byte indice) {
+    public Nombre getNombre(final byte indice) {
         return nombres[indice];
     }
 
-    public String getId(final byte indice) {
+    public Id getId(final byte indice) {
         return ids[indice];
     }
 
-    public String getTelefono(final byte indice) {
+    public Telefono getTelefono(final byte indice) {
         return telefonos[indice];
     }
 
-    public String getCorreo(final byte indice) {
+    public Correo getCorreo(final byte indice) {
         return correos[indice];
     }
 }
