@@ -2,8 +2,10 @@ package aplicacion.servicios;
 
 import aplicacion.puertos.entrada.ConseguirContactoPorIdCasoUso;
 import aplicacion.puertos.salida.ConseguirContactoPorIdPuerto;
-import aplicacion.servicios.dto.query.ConseguirContactoPorIdQuery;
+import aplicacion.servicios.dto.ContactoRespuestaDto;
 import aplicacion.servicios.dto.mapeador.ContactoAplicacionMapeador;
+import aplicacion.servicios.dto.query.ConseguirContactoPorIdQuery;
+import dominio.excepciones.ContactoNoEncontradoException;
 import dominio.modelo.Contacto;
 import dominio.ov.Id;
 import jakarta.validation.ConstraintViolation;
@@ -19,9 +21,10 @@ public final class ConseguirContactoPorIdServicio
 
     private final ConseguirContactoPorIdPuerto conseguirContactoPorIdPuerto;
     private final Validator validator;
+    private final Contacto contacto;
 
     @Override
-    public Contacto execute(
+    public ContactoRespuestaDto execute(
             final ConseguirContactoPorIdQuery query) {
 
         validateQuery(query);
@@ -30,14 +33,20 @@ public final class ConseguirContactoPorIdServicio
                 ContactoAplicacionMapeador
                         .fromGetByIdQueryToId(query);
 
-        return conseguirContactoPorIdPuerto
-                .getById(id)
-                .orElseThrow(
-                        () -> new IllegalStateException(
-                                "No existe un contacto con el ID: "
-                                        + id.value()
-                        )
-                );
+        final byte indice =
+                conseguirContactoPorIdPuerto
+                        .getIndicePorId(id)
+                        .orElseThrow(
+                                () -> ContactoNoEncontradoException
+                                        .becauseIdWasNotFound(id.value())
+                        );
+
+        return new ContactoRespuestaDto(
+                contacto.getId(indice).value(),
+                contacto.getNombre(indice).value(),
+                contacto.getTelefono(indice).value(),
+                contacto.getCorreo(indice).value()
+        );
     }
 
     private void validateQuery(
@@ -50,5 +59,4 @@ public final class ConseguirContactoPorIdServicio
             throw new ConstraintViolationException(violations);
         }
     }
-
 }
