@@ -1,0 +1,62 @@
+package infraestructura.puntosentrada.cli.manipulador;
+import aplicacion.puertos.entrada.ActualizarContactoCasoUso;
+import aplicacion.servicios.dto.comando.ActualizarContactoComando;
+import dominio.excepciones.ContactoNoEncontradoException;
+import infraestructura.puntosentrada.cli.io.ConsolaIo;
+import lombok.RequiredArgsConstructor;
+
+@RequiredArgsConstructor
+public final class ActualizarContactoManipulador
+        implements OperacionManipulador {
+
+    private final ActualizarContactoCasoUso actualizarContactoCasoUso;
+    private final ConsolaIo consola;
+
+    @Override
+    public void manejar() {
+
+        final String id =
+                consola.readRequired(
+                        "ID del contacto                         : "
+                );
+
+        final String nombre =
+                consola.readRequired(
+                        "Nuevo nombre                            : "
+                );
+
+        final String telefono =
+                consola.readRequired(
+                        "Nuevo teléfono                          : "
+                );
+
+        final String correo =
+                consola.readRequired(
+                        "Nuevo correo                            : "
+                );
+
+        final ActualizarContactoComando comando =
+                new ActualizarContactoComando(
+                        id,
+                        nombre,
+                        telefono,
+                        correo
+                );
+
+        try {
+
+            actualizarContactoCasoUso.execute(comando);
+
+            consola.println(
+                    "\nContacto actualizado correctamente."
+            );
+
+        } catch (
+                final ContactoNoEncontradoException excepcion) {
+
+            consola.println(
+                    "No encontrado: " + excepcion.getMessage()
+            );
+        }
+    }
+}
