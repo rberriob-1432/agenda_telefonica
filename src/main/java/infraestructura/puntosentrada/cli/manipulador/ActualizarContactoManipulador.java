@@ -27,15 +27,16 @@ public final class ActualizarContactoManipulador
                         "Nuevo nombre                            : "
                 );
 
+        final String correo =
+                consola.readRequired(
+                        "Nuevo correo                            : "
+                );
         final String telefono =
                 consola.readRequired(
                         "Nuevo teléfono                          : "
                 );
 
-        final String correo =
-                consola.readRequired(
-                        "Nuevo correo                            : "
-                );
+
 
         final ActualizarContactoComando comando =
                 new ActualizarContactoComando(

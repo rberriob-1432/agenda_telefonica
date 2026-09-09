@@ -1,6 +1,6 @@
 package agendatelefonica.src.main;
 
-import infraestructura.adaptador.persistencia.configuraciones.ContainerDependencia;
+import infraestructura.configuraciones.ContainerDependencia;
 
 public final class Main {
 

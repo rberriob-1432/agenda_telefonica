@@ -8,12 +8,45 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public enum OpcionMenu {
 
-    LISTAR_CONTACTOS(1, "Listar todos los contactos"),
-    BUSCAR_CONTACTO(2, "Buscar contacto por ID"),
-    CREAR_CONTACTO(3, "Crear contacto"),
-    ACTUALIZAR_CONTACTO(4, "Actualizar contacto"),
-    ELIMINAR_CONTACTO(5, "Eliminar contacto"),
-    SALIR(0, "Salir");
+    LISTAR_CONTACTOS(
+            1,
+            "Listar todos los contactos"
+    ),
+
+    BUSCAR_CONTACTO(
+            2,
+            "Buscar contacto por ID"
+    ),
+
+    BUSCAR_CONTACTOS(
+            3,
+            "Búsqueda avanzada"
+    ),
+
+    CREAR_CONTACTO(
+            4,
+            "Crear contacto"
+    ),
+
+    ACTUALIZAR_CONTACTO(
+            5,
+            "Actualizar contacto"
+    ),
+
+    ELIMINAR_CONTACTO(
+            6,
+            "Eliminar contacto"
+    ),
+
+    EXPORTAR_CONTACTOS(
+            7,
+            "Exportar contactos"
+    ),
+
+    SALIR(
+            0,
+            "Salir"
+    );
 
     private final int numero;
     private final String descripcion;

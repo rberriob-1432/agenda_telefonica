@@ -1,27 +1,33 @@
-package infraestructura.adaptador.persistencia.configuraciones;
+package infraestructura.configuraciones;
 import aplicacion.puertos.entrada.ActualizarContactoCasoUso;
+import aplicacion.puertos.entrada.BuscarContactosCasoUso;
 import aplicacion.puertos.entrada.ConseguirContactoPorIdCasoUso;
 import aplicacion.puertos.entrada.ConseguirTodosContactosCasoUso;
 import aplicacion.puertos.entrada.CrearContactoCasoUso;
 import aplicacion.puertos.entrada.EliminarContactoCasoUso;
+import aplicacion.puertos.entrada.ExportarContactosCasoUso;
 
 import aplicacion.servicios.ActualizarContactoServicio;
+import aplicacion.servicios.BuscarContactosServicio;
 import aplicacion.servicios.ConseguirContactoPorIdServicio;
 import aplicacion.servicios.ConseguirTodosContactosServicio;
 import aplicacion.servicios.CrearContactoServicio;
 import aplicacion.servicios.EliminarContactoServicio;
+import aplicacion.servicios.ExportarContactosServicio;
 
 import dominio.modelo.Contacto;
 
 import infraestructura.adaptador.persistencia.archivo.ContactoRepositorioTxt;
-import infraestructura.configuraciones.PropiedadesApp;
+import infraestructura.adaptador.persistencia.archivo.ExportarContactosTxt;
 import infraestructura.puntosentrada.cli.AgendaTelefonicaCli;
 import infraestructura.puntosentrada.cli.io.ConsolaIo;
 import infraestructura.puntosentrada.cli.io.ContactoRespuestaImpresor;
 import infraestructura.puntosentrada.cli.manipulador.ActualizarContactoManipulador;
+import infraestructura.puntosentrada.cli.manipulador.BuscarContactosManipulador;
 import infraestructura.puntosentrada.cli.manipulador.ConseguirContactoPorIdManipulador;
 import infraestructura.puntosentrada.cli.manipulador.CrearContactoManipulador;
 import infraestructura.puntosentrada.cli.manipulador.EliminarContactoManipulador;
+import infraestructura.puntosentrada.cli.manipulador.ExportarContactosManipulador;
 import infraestructura.puntosentrada.cli.manipulador.ListarContactosManipulador;
 
 import jakarta.validation.Validation;
@@ -31,16 +37,18 @@ import java.util.Scanner;
 
 public final class ContainerDependencia {
 
+    private final PropiedadesApp propiedadesApp;
     private final Contacto contacto;
     private final Validator validator;
     private final ContactoRepositorioTxt repositorio;
 
     public ContainerDependencia() {
 
-        final PropiedadesApp propiedadesApp =
+        this.propiedadesApp =
                 new PropiedadesApp();
 
-        this.contacto = new Contacto();
+        this.contacto =
+                new Contacto();
 
         this.validator =
                 Validation
@@ -89,17 +97,41 @@ public final class ContainerDependencia {
                         repositorio
                 );
 
-        final EliminarContactoCasoUso eliminarContactoCasoUso =
+        final EliminarContactoCasoUso
+                eliminarContactoCasoUso =
                 new EliminarContactoServicio(
                         repositorio,
                         repositorio,
                         validator
                 );
 
-        final ContactoRespuestaImpresor impresor =
-                new ContactoRespuestaImpresor(consola);
+        final BuscarContactosCasoUso
+                buscarContactosCasoUso =
+                new BuscarContactosServicio(
+                        repositorio,
+                        validator
+                );
 
-        final CrearContactoManipulador crearManipulador =
+        final ExportarContactosTxt
+                exportarContactosTxt =
+                new ExportarContactosTxt(
+                        propiedadesApp
+                );
+
+        final ExportarContactosCasoUso
+                exportarContactosCasoUso =
+                new ExportarContactosServicio(
+                        repositorio,
+                        exportarContactosTxt
+                );
+
+        final ContactoRespuestaImpresor impresor =
+                new ContactoRespuestaImpresor(
+                        consola
+                );
+
+        final CrearContactoManipulador
+                crearManipulador =
                 new CrearContactoManipulador(
                         crearContactoCasoUso,
                         consola
@@ -120,7 +152,15 @@ public final class ContainerDependencia {
                         impresor
                 );
 
-        final ListarContactosManipulador listarManipulador =
+        final BuscarContactosManipulador
+                buscarContactosManipulador =
+                new BuscarContactosManipulador(
+                        buscarContactosCasoUso,
+                        consola
+                );
+
+        final ListarContactosManipulador
+                listarManipulador =
                 new ListarContactosManipulador(
                         conseguirTodosContactosCasoUso,
                         consola
@@ -133,13 +173,22 @@ public final class ContainerDependencia {
                         consola
                 );
 
+        final ExportarContactosManipulador
+                exportarContactosManipulador =
+                new ExportarContactosManipulador(
+                        exportarContactosCasoUso,
+                        consola
+                );
+
         return new AgendaTelefonicaCli(
                 consola,
                 listarManipulador,
                 buscarManipulador,
                 crearManipulador,
                 actualizarManipulador,
-                eliminarManipulador
+                buscarContactosManipulador,
+                eliminarManipulador,
+                exportarContactosManipulador
         );
     }
 

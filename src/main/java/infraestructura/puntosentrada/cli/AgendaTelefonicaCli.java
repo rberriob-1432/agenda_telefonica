@@ -1,10 +1,6 @@
 package infraestructura.puntosentrada.cli;
 import infraestructura.puntosentrada.cli.io.ConsolaIo;
-import infraestructura.puntosentrada.cli.manipulador.ActualizarContactoManipulador;
-import infraestructura.puntosentrada.cli.manipulador.ConseguirContactoPorIdManipulador;
-import infraestructura.puntosentrada.cli.manipulador.CrearContactoManipulador;
-import infraestructura.puntosentrada.cli.manipulador.EliminarContactoManipulador;
-import infraestructura.puntosentrada.cli.manipulador.ListarContactosManipulador;
+import infraestructura.puntosentrada.cli.manipulador.*;
 import infraestructura.puntosentrada.cli.menu.OpcionMenu;
 import lombok.RequiredArgsConstructor;
 
@@ -12,13 +8,13 @@ import lombok.RequiredArgsConstructor;
 public final class AgendaTelefonicaCli {
 
     private final ConsolaIo consola;
-
     private final ListarContactosManipulador listarManipulador;
     private final ConseguirContactoPorIdManipulador buscarManipulador;
     private final CrearContactoManipulador crearManipulador;
     private final ActualizarContactoManipulador actualizarManipulador;
+    private final BuscarContactosManipulador buscarContactosManipulador;
     private final EliminarContactoManipulador eliminarManipulador;
-
+    private final ExportarContactosManipulador exportarContactosManipulador;
     public void start() {
 
         boolean ejecutando = true;
@@ -49,6 +45,9 @@ public final class AgendaTelefonicaCli {
                 case BUSCAR_CONTACTO ->
                         buscarManipulador.manejar();
 
+                case BUSCAR_CONTACTOS ->
+                        buscarContactosManipulador.manejar();
+
                 case CREAR_CONTACTO ->
                         crearManipulador.manejar();
 
@@ -57,6 +56,8 @@ public final class AgendaTelefonicaCli {
 
                 case ELIMINAR_CONTACTO ->
                         eliminarManipulador.manejar();
+                case EXPORTAR_CONTACTOS ->
+                        exportarContactosManipulador.manejar();
 
                 case SALIR -> {
                     consola.println(
