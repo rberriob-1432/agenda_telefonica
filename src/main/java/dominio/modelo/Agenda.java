@@ -6,6 +6,7 @@ public class Agenda {
     private final String[] nombres;
     private final String[] telefonos;
     private final String[] correos;
+    private final String[] ids;
 
     private byte cantidadContactos;
 
@@ -13,17 +14,20 @@ public class Agenda {
         this.nombres = new String[MAX_CONTACTOS];
         this.telefonos = new String[MAX_CONTACTOS];
         this.correos = new String[MAX_CONTACTOS];
+        this.ids = new String[MAX_CONTACTOS];
         this.cantidadContactos = 0;
     }
 
     public void agregarContacto(
             final String nombre,
             final String telefono,
-            final String correo) {
+            final String correo,
+            final String id) {
 
         nombres[cantidadContactos] = nombre;
         telefonos[cantidadContactos] = telefono;
         correos[cantidadContactos] = correo;
+        ids[cantidadContactos] = id;
 
         cantidadContactos++;
     }
@@ -34,6 +38,10 @@ public class Agenda {
 
     public String getNombre(final byte indice) {
         return nombres[indice];
+    }
+
+    public String getId(final byte indice) {
+        return ids[indice];
     }
 
     public String getTelefono(final byte indice) {
