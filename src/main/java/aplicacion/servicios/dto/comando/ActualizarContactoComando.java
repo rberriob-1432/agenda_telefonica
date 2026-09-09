@@ -5,7 +5,7 @@ import jakarta.validation.constraints.Size;
 public record ActualizarContactoComando(
         @NotBlank(message = "id no debe ser vacio") String id,
         @NotBlank(message = "nombre no debe ser vacio")
-        @Size(min = 3, message = "nombre debe tenr al menos 3 caracteres")
+        @Size(min = 3, message = "nombre debe tener al menos 3 caracteres")
         String nombre,
         @NotBlank(message = "correo no debe ser vacio")
         @Email(message = "correo debe tener un formato valido")
