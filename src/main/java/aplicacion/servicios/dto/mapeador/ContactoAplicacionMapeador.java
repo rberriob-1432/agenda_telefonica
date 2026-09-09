@@ -1,8 +1,9 @@
 package aplicacion.servicios.dto.mapeador;
+
 import aplicacion.servicios.dto.comando.AgregarContactoComando;
 import aplicacion.servicios.dto.comando.ActualizarContactoComando;
 import aplicacion.servicios.dto.comando.EliminarContactoComando;
-import aplicacion.servicios.dto.query.ConseguirContactoPorId;
+import aplicacion.servicios.dto.query.ConseguirContactoPorIdQuery;
 import dominio.ov.Correo;
 import dominio.ov.Id;
 import dominio.ov.Nombre;
@@ -13,7 +14,7 @@ import lombok.experimental.UtilityClass;
 public class ContactoAplicacionMapeador {
 
     public Id fromGetByIdQueryToId(
-            final ConseguirContactoPorId query) {
+            final ConseguirContactoPorIdQuery query) {
 
         return new Id(query.id());
     }
@@ -54,10 +55,15 @@ public class ContactoAplicacionMapeador {
         return new Nombre(comando.nombre());
     }
 
+    public Telefono fromUpdateCommandToTelefono(
+            final ActualizarContactoComando comando) {
+
+        return new Telefono(comando.telefono());
+    }
+
     public Correo fromUpdateCommandToCorreo(
             final ActualizarContactoComando comando) {
 
         return new Correo(comando.correo());
     }
 }
-
