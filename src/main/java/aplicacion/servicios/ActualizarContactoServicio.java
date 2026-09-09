@@ -1,11 +1,13 @@
-package aplicacion.servicios;
 
+package aplicacion.servicios;
 import aplicacion.puertos.entrada.ActualizarContactoCasoUso;
 import aplicacion.puertos.salida.ActualizarContactoPuerto;
 import aplicacion.puertos.salida.ConseguirContactoPorCorreoPuerto;
 import aplicacion.puertos.salida.ConseguirContactoPorIdPuerto;
 import aplicacion.servicios.dto.comando.ActualizarContactoComando;
 import aplicacion.servicios.dto.mapeador.ContactoAplicacionMapeador;
+import dominio.excepciones.ContactoNoEncontradoException;
+import dominio.excepciones.CorreoYaRegistradoException;
 import dominio.modelo.Contacto;
 import dominio.ov.Correo;
 import dominio.ov.Id;
@@ -19,10 +21,12 @@ import java.util.Set;
 @RequiredArgsConstructor
 public final class ActualizarContactoServicio
         implements ActualizarContactoCasoUso {
+
     private final ActualizarContactoPuerto actualizarContactoPuerto;
     private final ConseguirContactoPorIdPuerto conseguirContactoPorIdPuerto;
     private final ConseguirContactoPorCorreoPuerto conseguirContactoPorCorreoPuerto;
     private final Validator validator;
+    private final Contacto contacto;
 
     @Override
     public Contacto execute(
@@ -34,23 +38,25 @@ public final class ActualizarContactoServicio
                 ContactoAplicacionMapeador
                         .fromUpdateCommandToId(comando);
 
-        ensureContactoExists(id);
+        final byte indice = conseguirIndicePorId(id);
 
         final Correo correo =
                 ContactoAplicacionMapeador
                         .fromUpdateCommandToCorreo(comando);
 
-        ensureCorreoNoRegistrado(correo, id);
+        ensureCorreoNoRegistrado(correo, indice);
 
-        final Contacto contacto =
-                conseguirContactoPorIdPuerto
-                        .getById(id)
-                        .orElseThrow(
-                                () -> new IllegalStateException(
-                                        "No existe un contacto con el ID: "
-                                                + id.value()
-                                )
-                        );
+        final var nombre =
+                ContactoAplicacionMapeador
+                        .fromUpdateCommandToNombre(comando);
+
+        final var telefono =
+                ContactoAplicacionMapeador
+                        .fromUpdateCommandToTelefono(comando);
+
+        contacto.setNombre(indice, nombre);
+        contacto.setTelefono(indice, telefono);
+        contacto.setCorreo(indice, correo);
 
         return actualizarContactoPuerto.update(contacto);
     }
@@ -66,35 +72,28 @@ public final class ActualizarContactoServicio
         }
     }
 
-    private void ensureContactoExists(
+    private byte conseguirIndicePorId(
             final Id id) {
 
-        conseguirContactoPorIdPuerto
-                .getById(id)
+        return conseguirContactoPorIdPuerto
+                .getIndicePorId(id)
                 .orElseThrow(
-                        () -> new IllegalStateException(
-                                "No existe un contacto con el ID: "
-                                        + id.value()
-                        )
+                        () -> ContactoNoEncontradoException
+                                .becauseIdWasNotFound(id.value())
                 );
     }
 
     private void ensureCorreoNoRegistrado(
             final Correo correo,
-            final Id id) {
+            final byte indice) {
 
-        conseguirContactoPorCorreoPuerto
-                .getByEmail(correo)
-                .ifPresent(
-                        contactoEncontrado -> {
+        if (!conseguirContactoPorCorreoPuerto.existePorCorreo(correo)) {
+            return;
+        }
 
-                            /*
-                             * Si el correo pertenece al mismo contacto
-                             * que estamos actualizando, no hay problema.
-                             *
-                             * Si pertenece a otro contacto,
-                             * rechazamos la actualización.
-                             */
-                        });
+        if (!contacto.getCorreo(indice).equals(correo)) {
+            throw CorreoYaRegistradoException
+                    .becauseEmailWasAlreadyRegistered(correo.value());
+        }
     }
 }

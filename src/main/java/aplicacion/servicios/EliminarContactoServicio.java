@@ -5,7 +5,7 @@ import aplicacion.puertos.salida.ConseguirContactoPorIdPuerto;
 import aplicacion.puertos.salida.EliminarContactoPuerto;
 import aplicacion.servicios.dto.comando.EliminarContactoComando;
 import aplicacion.servicios.dto.mapeador.ContactoAplicacionMapeador;
-import dominio.excepciones.InvalidoIdExcepcion;
+import dominio.excepciones.ContactoNoEncontradoException;
 import dominio.ov.Id;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
@@ -17,6 +17,7 @@ import java.util.Set;
 @RequiredArgsConstructor
 public final class EliminarContactoServicio
         implements EliminarContactoCasoUso {
+
     private final EliminarContactoPuerto eliminarContactoPuerto;
     private final ConseguirContactoPorIdPuerto conseguirContactoPorIdPuerto;
     private final Validator validator;
@@ -51,10 +52,10 @@ public final class EliminarContactoServicio
             final Id id) {
 
         conseguirContactoPorIdPuerto
-                .getById(id)
+                .getIndicePorId(id)
                 .orElseThrow(
-                        () -> InvalidoIdExcepcion
-                                .becauseValueIsEmpty()
+                        () -> ContactoNoEncontradoException
+                                .becauseIdWasNotFound(id.value())
                 );
     }
 }
