@@ -3,6 +3,7 @@ import aplicacion.puertos.entrada.CrearContactoCasoUso;
 import aplicacion.servicios.dto.comando.AgregarContactoComando;
 import dominio.excepciones.CorreoYaRegistradoException;
 import infraestructura.puntosentrada.cli.io.ConsolaIo;
+import jakarta.validation.ConstraintViolationException;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
@@ -45,7 +46,17 @@ public final class CrearContactoManipulador
             consola.println(
                     "Error: " + excepcion.getMessage()
             );
+
+        } catch (
+                final ConstraintViolationException excepcion) {
+
+            excepcion.getConstraintViolations()
+                    .forEach(violacion ->
+                            consola.println(
+                                    "Error: "
+                                            + violacion.getMessage()
+                            )
+                    );
         }
     }
 }
-

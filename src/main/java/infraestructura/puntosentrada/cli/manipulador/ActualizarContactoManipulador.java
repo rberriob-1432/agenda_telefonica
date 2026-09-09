@@ -3,6 +3,8 @@ import aplicacion.puertos.entrada.ActualizarContactoCasoUso;
 import aplicacion.servicios.dto.comando.ActualizarContactoComando;
 import dominio.excepciones.ContactoNoEncontradoException;
 import infraestructura.puntosentrada.cli.io.ConsolaIo;
+import infraestructura.puntosentrada.cli.manipulador.OperacionManipulador;
+import jakarta.validation.ConstraintViolationException;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
@@ -57,6 +59,17 @@ public final class ActualizarContactoManipulador
             consola.println(
                     "No encontrado: " + excepcion.getMessage()
             );
+
+        } catch (
+                final ConstraintViolationException excepcion) {
+
+            excepcion.getConstraintViolations()
+                    .forEach(violacion ->
+                            consola.println(
+                                    "Error: "
+                                            + violacion.getMessage()
+                            )
+                    );
         }
     }
 }
